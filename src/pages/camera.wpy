@@ -1,0 +1,26 @@
+<template>
+<foot></foot>
+</template>
+
+<script>
+import wepy from 'wepy'
+import Foot from '../components/foot'
+export default class Camera extends wepy.page {
+  config = {
+    navigationBarTitleText: '激活会员卡'
+  }
+  components = {
+    foot: Foot
+  }
+
+  data = {}
+  methods = {}
+
+  events = {}
+  // Other properties
+}
+</script>
+
+<style lang="less">
+
+</style>

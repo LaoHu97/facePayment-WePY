@@ -1,0 +1,28 @@
+<template>
+<view class="foot">西安万鼎网络科技</view>
+</template>
+
+<script>
+import wepy from 'wepy'
+export default class Foot extends wepy.component {
+  components = {}
+
+  data = {}
+  methods = {}
+
+  events = {}
+  // Other properties
+}
+</script>
+
+<style lang="less">
+/** less **/
+.foot {
+    width: 100%;
+    color: #576b95;
+    font-size: 24rpx;
+    text-align: center;
+    position: fixed;
+    bottom: 32rpx;
+}
+</style>
