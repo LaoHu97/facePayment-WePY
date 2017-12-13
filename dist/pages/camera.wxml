@@ -1,3 +1,12 @@
 
-
-<view class="foot">西安万鼎网络科技</view>
+<view class="camera_view">
+  <view class="text">请保持微笑完成拍照😊</view>
+  <camera class="camera" device-position="front" flash="auto" binderror="error">
+    <cover-view>
+      <cover-image class="img" src="../images/humanface.png"/>
+    </cover-view>
+  </camera>
+  <view class="btn-area">
+    <button type="primary" bindtap="takePhoto">拍照上传</button>
+  </view>
+</view>
