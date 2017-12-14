@@ -96,7 +96,7 @@
     </view>
     <view class="page-body">
       <view class="btn-area">
-        <button type="primary" loading="{{form.loading}}" bindtap="carryOn">继续</button>
+        <button type="primary" loading="{{form.loading}}" bindtap="addCard">继续</button>
       </view>
     </view>
   </view>
@@ -144,13 +144,41 @@ export default class Index extends wepy.page {
       wepy.navigateTo({
         url: 'camera'
       })
+    },
+    addCard() {
+      wepy.request({
+        url: 'http://test.weupay.com/pay/wxSmaPro/addCard',
+        data: {
+          mid: '192'
+        },
+        header: {
+          'content-type': 'application/json'
+        },
+        method: 'POST',
+        success: function(res) {
+          let data = {
+            timestamp: res.data.timestamp,
+            nonce_str: res.data.nonce_str,
+            outer_str: res.data.outer_str,
+            signature: res.data.signature
+          }
+          wepy.addCard({
+            cardList: [{
+              cardId: res.data.card_id,
+              cardExt: JSON.stringify(data)
+            }],
+            success: function(res) {
+              console.log(res)
+            }
+          })
+        }
+      })
     }
   }
 
   events = {
 
   }
-
   onLoad() {
     let self = this
     this.$parent.getUserInfo(function(userInfo) {

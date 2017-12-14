@@ -29,7 +29,8 @@ export default class extends wepy.app {
       'navigationBarBackgroundColor': '#1AAD19',
       'navigationBarTitleText': 'WeChat',
       'navigationBarTextStyle': 'WeChat'
-    }
+    },
+    "debug": true
   }
 
   globalData = {

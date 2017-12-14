@@ -65,7 +65,7 @@
     </view>
     <view class="page-body">
       <view class="btn-area">
-        <button type="primary" loading="{{form.loading}}" bindtap="carryOn">继续</button>
+        <button type="primary" loading="{{form.loading}}" bindtap="addCard">继续</button>
       </view>
     </view>
   </view>
