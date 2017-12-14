@@ -1,0 +1,75 @@
+
+<view class="container">
+  <view class="userinfo">
+    <image class="userinfo-avatar"  wx:if="{{userInfo.avatarUrl}}" src="{{ userInfo.avatarUrl }}" background-size="cover"/>
+    <view class="userinfo-nickname">{{ userInfo.nickName }}</view>
+  </view>
+  <view class="page-section">
+    <view class="weui-cells__title">必填信息</view>
+    <view class="weui-cells weui-cells_after-title">
+      <view class="weui-cell weui-cell_input">
+        <view class="weui-cell__hd">
+          <view class="weui-label">姓名</view>
+        </view>
+        <view class="weui-cell__bd">
+          <view class="weui-cell weui-cell_input">
+            <input class="weui-input" value="{{form.username}}" placeholder="请输入姓名"/>
+          </view>
+        </view>
+      </view>
+      <view class="weui-cell weui-cell_input">
+        <view class="weui-cell__hd">
+          <view class="weui-label">手机</view>
+        </view>
+        <view class="weui-cell__bd">
+          <view class="weui-cell weui-cell_input">
+            <input class="weui-input" value="{{form.userphone}}" type="number" placeholder="请输入手机号码"/>
+          </view>
+        </view>
+      </view>
+      <view class="weui-cell weui-cell_input">
+        <view class="weui-cell__hd">
+          <view class="weui-label">身份证</view>
+        </view>
+        <view class="weui-cell__bd">
+          <view class="weui-cell weui-cell_input">
+            <input class="weui-input" value="{{form.useridcard}}" type="idcard" placeholder="请输入身份证号码"/>
+          </view>
+        </view>
+      </view>
+      <view class="weui-cell weui-cell_input">
+        <view class="weui-cell__hd">
+          <view class="weui-label">生日</view>
+        </view>
+        <view class="weui-cell__bd">
+          <view class="weui-cell weui-cell_input">
+            <picker mode="date" value="{{form.birthday}}" bindchange="bindDateChange">
+              <view class="weui-input">{{form.birthday}}</view>
+            </picker>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="weui-cells__title">选填信息</view>
+    <view class="weui-cells weui-cells_after-title">
+      <view class="weui-cell weui-cell_input">
+        <view class="weui-cell__hd">
+          <view class="weui-label">邮箱</view>
+        </view>
+        <view class="weui-cell__bd">
+          <view class="weui-cell weui-cell_input">
+            <input class="weui-input" placeholder="请输入邮箱"/>
+          </view>
+        </view>
+      </view>
+    </view>
+    <view class="page-body">
+      <view class="btn-area">
+        <button type="primary" loading="{{form.loading}}" bindtap="addCard">继续</button>
+      </view>
+    </view>
+  </view>
+  
+<view class="foot">西安万鼎网络科技</view>
+
+</view>
