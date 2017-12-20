@@ -1,2 +1,2 @@
 @import "./../components/foot.wxss";
-.userinfo{display:flex;flex-direction:column;align-items:center;margin-top:65rpx;margin-bottom:8rpx}.userinfo-avatar{width:80rpx;height:80rpx;border-radius:50%;border:1rpx solid #fff}.userinfo-nickname{color:#666;margin-top:4rpx}.btn-area{padding:65px 15px}
+.userinfo{display:flex;flex-direction:column;align-items:center;margin-top:65rpx;margin-bottom:8rpx}.userinfo-avatar{width:100rpx;height:100rpx;border-radius:50%;border:2rpx solid #fff}.userinfo-nickname{color:#333;margin-top:6rpx}.btn-area{padding:65px 15px}

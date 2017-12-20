@@ -29,8 +29,7 @@ export default class extends wepy.app {
       'navigationBarBackgroundColor': '#1AAD19',
       'navigationBarTitleText': 'WeChat',
       'navigationBarTextStyle': 'WeChat'
-    },
-    "debug": true
+    }
   }
 
   globalData = {
@@ -41,32 +40,13 @@ export default class extends wepy.app {
     super()
     this.use('requestfix')
   }
-
-  onShow() {
-
-  }
-  logoing() {
-    wepy.login({
-      success: function(res) {
-        if (res.code) {
-          console.log(res.code)
-        } else {
-          console.log('获取用户登录态失败！' + res.errMsg)
-        }
-      }
-    })
-  }
-  getUserInfo(cb) {
-    const that = this
-    if (this.globalData.userInfo) {
-      return this.globalData.userInfo
+  onShow(data) {
+    console.log(data)
+    if (data.referrerInfo.extraData) {
+      wepy.navigateTo({
+        url: 'camera' + '?code=' + data.referrerInfo.extraData.code + '&card_id=' + data.referrerInfo.extraData.card_id
+      })
     }
-    wepy.getUserInfo({
-      success(res) {
-        that.globalData.userInfo = res.userInfo
-        cb && cb(res.userInfo)
-      }
-    })
   }
 }
 </script>
