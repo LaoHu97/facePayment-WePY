@@ -29,15 +29,8 @@ export default class Accomplish extends wepy.page {
   }
 
   events = {}
-  onLoad(options) {
-    console.log(options)
-    wepy.showLoading({
-      title: '正在认证',
-      mask: true
-    })
-    setTimeout(function() {
-      wepy.hideLoading()
-    }, 4000)
+  onLoad(query) {
+
   }
 }
 </script>

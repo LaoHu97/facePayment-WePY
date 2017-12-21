@@ -1,11 +1,11 @@
 <template>
 <view class="camera_view">
   <view class="text">请保持微笑完成拍照😊</view>
-  <!-- <camera class="camera" device-position="front" flash="auto" binderror="error">
+  <camera class="camera" device-position="front" flash="auto" binderror="error">
     <cover-view>
       <cover-image class="img" src="../images/humanface.png" />
     </cover-view>
-  </camera> -->
+  </camera>
   <view class="btn-area">
     <button type="primary" bindtap="takePhoto">拍照上传</button>
   </view>
@@ -28,11 +28,17 @@ export default class Camera extends wepy.page {
   }
   methods = {
     takePhoto() {
+      let _this = this
+      wepy.showLoading({
+        title: '加载中',
+        mask: true
+      })
       const ctx = wepy.createCameraContext()
       ctx.takePhoto({
         quality: 'low',
         success: (res) => {
-          console.log(res.tempImagePath)
+          _this.uploadFile(res.tempImagePath)
+          wepy.hideLoading()
         }
       })
     },
@@ -40,12 +46,37 @@ export default class Camera extends wepy.page {
       console.log(e.detail)
     }
   }
-
-  events = {}
-  // Other properties
-  onShow() {
-
+  uploadFile(data) {
+    console.log(data)
+    console.log('正在上传图片')
+    wepy.showLoading({
+      title: '正在上传',
+      mask: true
+    })
+    wepy.uploadFile({
+      url: 'http://test.weupay.com/pay/api/face/addFacePerson',
+      filePath: data,
+      name: 'imageUrl',
+      formData: {
+        'person_name': 'liuyifei',
+        'phone': '12345678'
+      },
+      success: function(res) {
+        console.log(res)
+        console.log('图片上传完成')
+        wepy.navigateTo({
+          url: 'accomplish'
+        })
+        wepy.hideLoading()
+      },
+      fail: function(res) {
+        wepy.hideLoading()
+        console.log('图片上传失败')
+      }
+    })
   }
+  events = {}
+  onShow() {}
 }
 </script>
 
@@ -70,5 +101,9 @@ export default class Camera extends wepy.page {
     width: 100%;
     position: fixed;
     bottom: 0;
+}
+.img {
+    width: 100%;
+    height: 100%;
 }
 </style>

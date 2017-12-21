@@ -21,6 +21,7 @@ export default class extends wepy.app {
   config = {
     pages: [
       'pages/index',
+      'pages/activation',
       'pages/camera',
       'pages/accomplish'
     ],
@@ -29,11 +30,13 @@ export default class extends wepy.app {
       'navigationBarBackgroundColor': '#1AAD19',
       'navigationBarTitleText': 'WeChat',
       'navigationBarTextStyle': 'WeChat'
-    }
+    },
+    'debug': true
   }
 
   globalData = {
-    userInfo: null
+    userInfo: null,
+    useridcard: null
   }
 
   constructor() {
@@ -41,12 +44,7 @@ export default class extends wepy.app {
     this.use('requestfix')
   }
   onShow(data) {
-    console.log(data)
-    if (data.referrerInfo.extraData) {
-      wepy.navigateTo({
-        url: 'camera' + '?code=' + data.referrerInfo.extraData.code + '&card_id=' + data.referrerInfo.extraData.card_id
-      })
-    }
+    this.globalData.useridcard = data.query
   }
 }
 </script>
