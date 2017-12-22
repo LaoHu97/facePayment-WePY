@@ -37,6 +37,9 @@
 
 <script>
 import wepy from 'wepy'
+import {
+  service
+} from '../config.js'
 // 引入组件
 import Foot from '../components/foot'
 
@@ -59,41 +62,41 @@ export default class Index extends wepy.page {
 
   methods = {
     addCard() {
-      wepy.navigateTo({
-        url: 'camera'
+      let _this = this
+      wepy.showLoading({
+        title: '加载中'
       })
-      // let _this = this
-      // wepy.showLoading({
-      //   title: '加载中'
-      // })
-      // wepy.request({
-      //   url: 'http://test.weupay.com/pay/wxSmaPro/addCard',
-      //   data: {
-      //     mid: '66'
-      //   },
-      //   method: 'POST',
-      //   success(res) {
-      //     let data = {
-      //       timestamp: res.data.timestamp,
-      //       nonce_str: res.data.nonce_str,
-      //       outer_str: res.data.outer_str,
-      //       signature: res.data.signature
-      //     }
-      //     wepy.addCard({
-      //       cardList: [{
-      //         cardId: res.data.card_id,
-      //         cardExt: JSON.stringify(data)
-      //       }],
-      //       success: function(res) {
-      //         wepy.hideLoading()
-      //         _this.openCard(res)
-      //       },
-      //       fail: function(res) {
-      //         wepy.hideLoading()
-      //       }
-      //     })
-      //   }
-      // })
+      wepy.request({
+        url: service.addCard,
+        data: {
+          mid: '66'
+        },
+        method: 'POST',
+        success(res) {
+          let data = {
+            timestamp: res.data.timestamp,
+            nonce_str: res.data.nonce_str,
+            outer_str: res.data.outer_str,
+            signature: res.data.signature
+          }
+          wepy.addCard({
+            cardList: [{
+              cardId: res.data.card_id,
+              cardExt: JSON.stringify(data)
+            }],
+            success: function(res) {
+              wepy.hideLoading()
+              _this.openCard(res)
+            },
+            fail: function(res) {
+              wepy.hideLoading()
+            }
+          })
+        },
+        fail(res) {
+          console.log(res.data)
+        }
+      })
     }
   }
   openCard(res) {
@@ -102,7 +105,7 @@ export default class Index extends wepy.page {
     })
     let cardId = res.cardList[0].cardId
     wepy.request({
-      url: 'http://test.weupay.com/pay/wxSmaPro/decryptCode',
+      url: service.decryptCode,
       data: {
         mid: '66',
         encrypt_code: res.cardList[0].code
@@ -127,9 +130,7 @@ export default class Index extends wepy.page {
   events = {
 
   }
-  onLoad() {
-
-  }
+  onLoad() {}
   onShow() {
     let self = this
     wepy.getUserInfo({
@@ -138,6 +139,9 @@ export default class Index extends wepy.page {
         self.$apply()
       }
     })
+  }
+  onShareAppMessage(res) {
+    return this.$parent.onShareAppMessage('您有一张会员卡待领取')
   }
 }
 </script>

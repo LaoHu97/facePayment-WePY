@@ -1,19 +1,29 @@
 <template>
-<view class="camera_view">
-  <view class="text">请保持微笑完成拍照😊</view>
+<view class="camera_view" wx:if="{{cameraView}}">
+  <view class="text">请保持微笑完成拍照</view>
   <camera class="camera" device-position="front" flash="auto" binderror="error">
-    <cover-view>
-      <cover-image class="img" src="../images/humanface.png" />
-    </cover-view>
+    <cover-image class="img" src="../images/humanface.png" />
   </camera>
   <view class="btn-area">
-    <button type="primary" bindtap="takePhoto">拍照上传</button>
+    <button type="primary" bindtap="takePhoto">拍照</button>
+  </view>
+</view>
+<view class="progress_view" wx:else>
+  <image mode="widthFix" src="{{src}}"> </image>
+  <view>
+    <button type="primary" bindtap="uploadFile">上传</button>
+  </view>
+  <view class="re_takePhoto">
+    <button bindtap="reTakePhoto">重拍</button>
   </view>
 </view>
 </template>
 
 <script>
 import wepy from 'wepy'
+import {
+  service
+} from '../config.js'
 import Foot from '../components/foot'
 export default class Camera extends wepy.page {
   config = {
@@ -24,74 +34,79 @@ export default class Camera extends wepy.page {
   }
 
   data = {
-
+    cameraView: true,
+    src: ''
   }
   methods = {
     takePhoto() {
       let _this = this
-      wepy.showLoading({
-        title: '加载中',
-        mask: true
-      })
       const ctx = wepy.createCameraContext()
       ctx.takePhoto({
         quality: 'low',
         success: (res) => {
-          _this.uploadFile(res.tempImagePath)
-          wepy.hideLoading()
+          _this.cameraView = false
+          _this.src = res.tempImagePath
+          _this.$apply()
         }
       })
     },
     error(e) {
       console.log(e.detail)
+    },
+    uploadFile() {
+      console.log(this.src)
+      wepy.showLoading({
+        title: '正在上传'
+      })
+      wepy.uploadFile({
+        url: service.addFacePerson,
+        filePath: this.src,
+        name: 'imageUrl',
+        formData: {
+          'person_name': 'liuyifei',
+          'phone': '12345678'
+        },
+        success: function(res) {
+          let {
+            status,
+            message
+          } = JSON.parse(res.data)
+          console.log(res)
+          wepy.navigateTo({
+            url: 'accomplish?status=' + status + '&message=' + message,
+            success() {
+              wepy.hideLoading()
+            }
+          })
+        }
+      })
+    },
+    reTakePhoto() {
+      this.cameraView = true
+      this.$apply()
     }
-  }
-  uploadFile(data) {
-    console.log(data)
-    console.log('正在上传图片')
-    wepy.showLoading({
-      title: '正在上传',
-      mask: true
-    })
-    wepy.uploadFile({
-      url: 'http://test.weupay.com/pay/api/face/addFacePerson',
-      filePath: data,
-      name: 'imageUrl',
-      formData: {
-        'person_name': 'liuyifei',
-        'phone': '12345678'
-      },
-      success: function(res) {
-        console.log(res)
-        console.log('图片上传完成')
-        wepy.navigateTo({
-          url: 'accomplish'
-        })
-        wepy.hideLoading()
-      },
-      fail: function(res) {
-        wepy.hideLoading()
-        console.log('图片上传失败')
-      }
-    })
   }
   events = {}
   onShow() {}
+  onShareAppMessage(res) {
+    return this.$parent.onShareAppMessage('您有一张会员卡待领取')
+  }
 }
 </script>
 
 <style lang="less">
 .camera_view {
     height: 100%;
+    overflow: hidden;
     .camera {
-        position: fixed;
+        margin-top: 50px;
+        height: 900rpx;
+        position: absolute;
         bottom: 46px;
-        width: 100%;
-        height: 1000rpx;
     }
     .text {
         color: #3897d3;
-        font-size: 48rpx;
+        font-size: 32rpx;
         text-align: center;
         line-height: 1.5;
         margin-top: 50rpx;
@@ -101,9 +116,24 @@ export default class Camera extends wepy.page {
     width: 100%;
     position: fixed;
     bottom: 0;
+    button {
+        border-radius: 0;
+    }
 }
 .img {
     width: 100%;
-    height: 100%;
+    height: 85%;
+}
+.progress_view {
+    padding: 0 15px;
+    margin-top: 15px;
+    text-align: center;
+    image {
+        border-radius: 5px;
+    }
+
+}
+.re_takePhoto {
+    margin-top: 15rpx;
 }
 </style>

@@ -87,6 +87,9 @@
 
 <script>
 import wepy from 'wepy'
+import {
+  service
+} from '../config.js'
 // 引入组件
 import Foot from '../components/foot'
 
@@ -106,22 +109,22 @@ export default class Activation extends wepy.page {
 
   methods = {
     formSubmit(data) {
-      console.log(data)
       if (data.detail.value.name && data.detail.value.phone && data.detail.value.idcard) {
         wepy.showLoading({
           title: '加载中',
           mask: true
         })
         wepy.request({
-          url: 'http://test.weupay.com/pay/wxSmaPro/activeCard',
+          url: service.activeCard,
           data: {
             code: this.$parent.globalData.useridcard.encrypt_code,
             card_id: this.$parent.globalData.useridcard.card_id
           },
           method: 'POST',
           success(res) {
+            console.log(res)
             wepy.hideLoading()
-            if (res.data.status == 200) {
+            if (res.data.status === 200) {
               wepy.showToast({
                 title: '激活成功',
                 icon: 'success',
@@ -146,6 +149,7 @@ export default class Activation extends wepy.page {
             }
           },
           fail(res) {
+            onsole.log(res)
             wepy.hideLoading()
             wepy.showModal({
               title: '提示',
@@ -177,8 +181,9 @@ export default class Activation extends wepy.page {
     }
   }
   events = {}
-  onShow() {
-
+  onShow() {}
+  onShareAppMessage(res) {
+    return this.$parent.onShareAppMessage('您有一张会员卡待领取')
   }
 }
 </script>

@@ -2,9 +2,9 @@
 <view class="accomplish_view">
   <view class="group">
     <block>
-      <icon type="success" size="120" />
+      <icon type="{{icon}}" size="120" />
     </block>
-    <view class="text">认证成功</view>
+    <view class="text">{{message}}</view>
   </view>
 </view>
 <foot></foot>
@@ -12,17 +12,21 @@
 
 <script>
 import wepy from 'wepy'
+// import {
+//   service
+// } from '../config.js'
 import Foot from '../components/foot'
 export default class Accomplish extends wepy.page {
   config = {
-    navigationBarTitleText: '认证完成'
+    navigationBarTitleText: '认证结果'
   }
   components = {
     foot: Foot
   }
 
   data = {
-
+    message: '',
+    icon: 'success'
   }
   methods = {
 
@@ -30,7 +34,16 @@ export default class Accomplish extends wepy.page {
 
   events = {}
   onLoad(query) {
-
+    console.log(query)
+    this.message = query.message
+    if (query.status !== '0') {
+      this.icon = 'warn'
+    } else {
+      this.icon = 'success'
+    }
+  }
+  onShareAppMessage(res) {
+    return this.$parent.onShareAppMessage('您有一张会员卡待领取')
   }
 }
 </script>

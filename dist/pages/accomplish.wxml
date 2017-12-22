@@ -2,9 +2,9 @@
 <view class="accomplish_view">
   <view class="group">
     <block>
-      <icon type="success" size="120"/>
+      <icon type="{{icon}}" size="120"/>
     </block>
-    <view class="text">认证成功</view>
+    <view class="text">{{message}}</view>
   </view>
 </view>
 

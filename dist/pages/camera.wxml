@@ -1,12 +1,19 @@
 
-<view class="camera_view">
-  <view class="text">请保持微笑完成拍照😊</view>
+<view class="camera_view"  wx:if="{{cameraView}}">
+  <view class="text">请保持微笑完成拍照</view>
   <camera class="camera" device-position="front" flash="auto" binderror="error">
-    <cover-view>
-      <cover-image class="img" src="../images/humanface.png"/>
-    </cover-view>
+    <cover-image class="img" src="../images/humanface.png"/>
   </camera>
   <view class="btn-area">
-    <button type="primary" bindtap="takePhoto">拍照上传</button>
+    <button type="primary" bindtap="takePhoto">拍照</button>
+  </view>
+</view>
+<view class="progress_view"  wx:else>
+  <image mode="widthFix" src="{{src}}"> </image>
+  <view>
+    <button type="primary" bindtap="uploadFile">上传</button>
+  </view>
+  <view class="re_takePhoto">
+    <button bindtap="reTakePhoto">重拍</button>
   </view>
 </view>

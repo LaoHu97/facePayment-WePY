@@ -42,9 +42,45 @@ export default class extends wepy.app {
   constructor() {
     super()
     this.use('requestfix')
+    this.intercept('request', {
+      config(p) {
+        p.timestamp = +new Date()
+        return p
+      },
+      success(p) {
+        console.log('request success')
+        return p
+      },
+      fail(p) {
+        console.log('request error')
+        return p
+      }
+    })
+  }
+  onShareAppMessage(title = '微信会员卡') {
+    return {
+      title: title,
+      path: '/pages/index',
+      // imageUrl: '',
+      success: function(res) {
+        // 转发成功
+        console.log(res.errMsg)
+      },
+      fail: function(res) {
+        // 转发失败
+        console.log(res.errMsg)
+      }
+    }
   }
   onShow(data) {
     this.globalData.useridcard = data.query
+  }
+  onLaunch() {
+    wepy.login({
+      success: function(res) {
+        console.log(res)
+      }
+    })
   }
 }
 </script>
