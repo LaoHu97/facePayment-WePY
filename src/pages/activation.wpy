@@ -149,7 +149,6 @@ export default class Activation extends wepy.page {
             }
           },
           fail(res) {
-            onsole.log(res)
             wepy.hideLoading()
             wepy.showModal({
               title: '提示',

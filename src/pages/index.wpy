@@ -112,6 +112,7 @@ export default class Index extends wepy.page {
       },
       method: 'POST',
       success(res) {
+        console.log(cardId)
         wepy.openCard({
           cardList: [{
             cardId: cardId,
