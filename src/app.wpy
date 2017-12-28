@@ -78,17 +78,6 @@ export default class extends wepy.app {
   }
   onShow(data) {
     this.globalData.useridcard = data.query
-    wepy.checkSession({
-      success: function() {
-        console.log('登录未过期')
-        var sessionId = wepy.getStorageSync('sessionId')
-        console.log('sessionId为：' + sessionId)
-      },
-      fail: function() {
-        console.log('登录过期')
-        this.login()
-      }
-    })
   }
   login() {
     wepy.login({
@@ -129,7 +118,17 @@ export default class extends wepy.app {
     })
   }
   onLaunch() {
-
+    wepy.checkSession({
+      success: function() {
+        console.log('登录未过期')
+        var sessionId = wepy.getStorageSync('sessionId')
+        console.log('sessionId为：' + sessionId)
+      },
+      fail: function() {
+        console.log('登录过期')
+        this.login()
+      }
+    })
   }
 }
 </script>

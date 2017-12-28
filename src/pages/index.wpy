@@ -142,6 +142,18 @@ export default class Index extends wepy.page {
       console.log(data.userInfo)
       if (data.userInfo) {
         self.userInfo = data.userInfo
+        wepy.request({
+          url: service.getUserInfo,
+          data: {
+            signature: data.signature,
+            iv: data.iv,
+            encryptedData: data.encryptedData
+          },
+          method: 'POST',
+          success(res) {
+            console.log(res)
+          }
+        })
       }
       self.$apply()
     })

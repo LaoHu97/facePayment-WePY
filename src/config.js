@@ -9,6 +9,8 @@ var host = 'http://test.weupay.com';
 export const service = {
     //登录获取session
     jscodeToSession:`${host}/pay/wxSmaPro/jscodeToSession`,
+    //解密encryptedData
+    getUserInfo:`${host}/pay/wxSmaPro/getUserInfo`,
     // 领卡接口
     addCard: `${host}/pay/wxSmaPro/addCard`,
     // 打开会员卡
