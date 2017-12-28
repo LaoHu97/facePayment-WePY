@@ -40,8 +40,8 @@
           </view>
           <view class="weui-cell__bd">
             <view class="weui-cell weui-cell_input">
-              <picker mode="date" name="picker" bindchange="bindDateChange">
-                <view class="weui-input"/>
+              <picker mode="date" value="{{date}}" name="picker" bindchange="bindDateChange">
+                <view class="weui-input">{{date}}</view>
               </picker>
             </view>
           </view>
@@ -62,7 +62,10 @@
       </view>
       <view class="page-body">
         <view class="btn-area">
-          <button formType="submit" loading="{{loading}}">激活会员卡</button>
+          <button formType="submit" type="primary" loading="{{loading}}">激活会员卡</button>
+        </view>
+        <view class="btn-area">
+          <button formType="reset" loading="{{loading}}">重置</button>
         </view>
       </view>
     </view>

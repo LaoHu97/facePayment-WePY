@@ -19,7 +19,7 @@
     margin-top: 6rpx;
 }
 .btn-area {
-    padding: 65px 15px;
+    padding: 8px 15px;
 }
 </style>
 <template>
@@ -29,7 +29,10 @@
     <view class="userinfo-nickname">{{ userInfo.nickName }}</view>
   </view>
   <view class="btn-area">
-    <button type="primary" loading="{{form.loading}}" bindtap="addCard">领取会员卡</button>
+    <button type="primary" loading="{{form.loading}}" bindtap="addCard">注册新会员</button>
+  </view>
+  <view class="btn-area">
+    <button loading="{{form.loading}}" bindtap="addCard">老会员绑定</button>
   </view>
   <foot></foot>
 </view>
@@ -112,7 +115,7 @@ export default class Index extends wepy.page {
       },
       method: 'POST',
       success(res) {
-        console.log(cardId)
+        console.log(res)
         wepy.openCard({
           cardList: [{
             cardId: cardId,
@@ -122,6 +125,7 @@ export default class Index extends wepy.page {
             wepy.hideLoading()
           },
           fail: function(res) {
+            console.log('打开会员卡失败，原因：' + res.errMsg)
             wepy.hideLoading()
           }
         })
@@ -134,11 +138,12 @@ export default class Index extends wepy.page {
   onLoad() {}
   onShow() {
     let self = this
-    wepy.getUserInfo({
-      success(res) {
-        self.userInfo = res.userInfo
-        self.$apply()
+    this.$parent.getUserInfo(function(data) {
+      console.log(data.userInfo)
+      if (data.userInfo) {
+        self.userInfo = data.userInfo
       }
+      self.$apply()
     })
   }
   onShareAppMessage(res) {

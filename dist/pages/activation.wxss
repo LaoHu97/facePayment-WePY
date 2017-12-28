@@ -1,2 +1,2 @@
 @import "./../components/foot.wxss";
-.page-body{margin-top:45rpx}.btn-area{padding:0 15px}.page-section{padding:32rpx 0;background-color:#fff}
+.page-body{margin-top:45rpx}.btn-area{padding:5px 15px}.page-section{padding:32rpx 0;background-color:#fff}

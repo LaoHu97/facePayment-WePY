@@ -7,6 +7,8 @@ var host = 'http://test.weupay.com';
 // var host = 'http://library.glore/api';
 
 export const service = {
+    //登录获取session
+    jscodeToSession:`${host}/pay/wxSmaPro/jscodeToSession`,
     // 领卡接口
     addCard: `${host}/pay/wxSmaPro/addCard`,
     // 打开会员卡

@@ -16,6 +16,9 @@ page {
 <script>
 import wepy from 'wepy'
 import 'wepy-async-function'
+import {
+  service
+} from './config.js'
 
 export default class extends wepy.app {
   config = {
@@ -44,15 +47,16 @@ export default class extends wepy.app {
     this.use('requestfix')
     this.intercept('request', {
       config(p) {
-        p.timestamp = +new Date()
+        let sessionId = wepy.getStorageSync('sessionId')
+        p.data.sessionId = sessionId
         return p
       },
       success(p) {
-        console.log('request success')
+        console.log('API调用成功')
         return p
       },
       fail(p) {
-        console.log('request error')
+        console.log('API调用失败')
         return p
       }
     })
@@ -74,13 +78,58 @@ export default class extends wepy.app {
   }
   onShow(data) {
     this.globalData.useridcard = data.query
-  }
-  onLaunch() {
-    wepy.login({
-      success: function(res) {
-        console.log(res)
+    wepy.checkSession({
+      success: function() {
+        console.log('登录未过期')
+        var sessionId = wepy.getStorageSync('sessionId')
+        console.log('sessionId为：' + sessionId)
+      },
+      fail: function() {
+        console.log('登录过期')
+        this.login()
       }
     })
+  }
+  login() {
+    wepy.login({
+      success: function(res) {
+        if (res.code) {
+          wepy.request({
+            url: service.jscodeToSession,
+            data: {
+              appid: 'wx32a0348172f66270',
+              code: res.code
+            },
+            method: 'POST',
+            success(res) {
+              console.log(res)
+              try {
+                wepy.setStorageSync('sessionId', res.data.sessionId)
+              } catch (e) {
+                console.log(e)
+              }
+            }
+          })
+        } else {
+          console.log('获取用户登录态失败！' + res.errMsg)
+        }
+      }
+    })
+  }
+  getUserInfo(cb) {
+    const that = this
+    if (this.globalData.userInfo) {
+      return this.globalData.userInfo
+    }
+    wepy.getUserInfo({
+      success(res) {
+        that.globalData.userInfo = res
+        cb && cb(res)
+      }
+    })
+  }
+  onLaunch() {
+
   }
 }
 </script>
