@@ -5,10 +5,10 @@
     <view class="userinfo-nickname">{{ userInfo.nickName }}</view>
   </view>
   <view class="btn-area">
-    <button type="primary" loading="{{form.loading}}" bindtap="addCard">注册新会员</button>
+    <button type="primary" bindtap="addCard">注册新会员</button>
   </view>
   <view class="btn-area">
-    <button loading="{{form.loading}}" bindtap="addCard">老会员绑定</button>
+    <button bindtap="bindCard">老会员绑定</button>
   </view>
   
 <view class="foot">西安万鼎网络科技</view>

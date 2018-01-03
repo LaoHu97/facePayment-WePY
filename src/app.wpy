@@ -26,7 +26,8 @@ export default class extends wepy.app {
       'pages/index',
       'pages/activation',
       'pages/camera',
-      'pages/accomplish'
+      'pages/accomplish',
+      'pages/oldActivation'
     ],
     window: {
       'backgroundTextStyle': 'light',
@@ -79,6 +80,19 @@ export default class extends wepy.app {
   onShow(data) {
     this.globalData.useridcard = data.query
   }
+  sleep(s) {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        resolve('promise resolved')
+      }, s * 1000)
+    })
+  }
+
+  async testAsync() {
+    console.log('我先到')
+    await this.sleep(3)
+    console.log('我后到')
+  }
   login() {
     wepy.login({
       success: function(res) {
@@ -118,11 +132,11 @@ export default class extends wepy.app {
     })
   }
   onLaunch() {
+    let extConfig = wepy.getExtConfigSync ? wepy.getExtConfigSync() : {}
+    console.log(extConfig)
     wepy.checkSession({
       success: function() {
         console.log('登录未过期')
-        var sessionId = wepy.getStorageSync('sessionId')
-        console.log('sessionId为：' + sessionId)
       },
       fail: function() {
         console.log('登录过期')

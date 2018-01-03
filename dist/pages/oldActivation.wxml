@@ -1,0 +1,51 @@
+
+<form bindsubmit="formSubmit" bindreset="formReset">
+  <view class="container">
+    <view class="page-section">
+      <view class="weui-cells__title">必填信息</view>
+      <view class="weui-cells weui-cells_after-title">
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">姓名</view>
+          </view>
+          <view class="weui-cell__bd">
+            <view class="weui-cell weui-cell_input">
+              <input class="weui-input" name="name" placeholder="请输入姓名"/>
+            </view>
+          </view>
+        </view>
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">手机</view>
+          </view>
+          <view class="weui-cell__bd">
+            <view class="weui-cell weui-cell_input">
+              <input class="weui-input" name="phone" type="number" placeholder="请输入手机号码"/>
+            </view>
+          </view>
+        </view>
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">会员卡号</view>
+          </view>
+          <view class="weui-cell__bd">
+            <view class="weui-cell weui-cell_input">
+              <input class="weui-input" name="cardid" placeholder="请输入会员卡号"/>
+            </view>
+          </view>
+        </view>
+      </view>
+      <view class="page-body">
+        <view class="btn-area">
+          <button formType="submit" type="primary" loading="{{loading}}">提交</button>
+        </view>
+        <view class="btn-area">
+          <button formType="reset" loading="{{loading}}">重置</button>
+        </view>
+      </view>
+    </view>
+    
+<view class="foot">西安万鼎网络科技</view>
+
+  </view>
+</form>

@@ -29,10 +29,10 @@
     <view class="userinfo-nickname">{{ userInfo.nickName }}</view>
   </view>
   <view class="btn-area">
-    <button type="primary" loading="{{form.loading}}" bindtap="addCard">注册新会员</button>
+    <button type="primary" bindtap="addCard">注册新会员</button>
   </view>
   <view class="btn-area">
-    <button loading="{{form.loading}}" bindtap="addCard">老会员绑定</button>
+    <button bindtap="bindCard">老会员绑定</button>
   </view>
   <foot></foot>
 </view>
@@ -64,6 +64,11 @@ export default class Index extends wepy.page {
   computed = {}
 
   methods = {
+    bindCard() {
+      wepy.navigateTo({
+        url: 'oldActivation'
+      })
+    },
     addCard() {
       let _this = this
       wepy.showLoading({
@@ -135,27 +140,63 @@ export default class Index extends wepy.page {
   events = {
 
   }
-  onLoad() {}
+  getMiniMem() {
+    wepy.request({
+      url: service.getMiniMem,
+      data: {
+        mid: '66',
+        unionId: '123213213'
+      },
+      method: 'POST',
+      success(res) {
+
+      }
+    })
+  }
+  onLoad() {
+    // let self = this
+    // this.$parent.getUserInfo(function(data) {
+    //   if (data.userInfo) {
+    //     self.userInfo = data.userInfo
+    //     self.$apply()
+    //     wepy.request({
+    //       url: service.getUserInfo,
+    //       data: {
+    //         data
+    //       },
+    //       method: 'POST',
+    //       success(res) {
+    //         console.log(res)
+    //         if (res.data) {
+    //           self.getMiniMem()
+    //         }
+    //       }
+    //     })
+    //   }
+    // })
+  }
   onShow() {
     let self = this
-    this.$parent.getUserInfo(function(data) {
-      console.log(data.userInfo)
-      if (data.userInfo) {
-        self.userInfo = data.userInfo
-        wepy.request({
-          url: service.getUserInfo,
-          data: {
-            signature: data.signature,
-            iv: data.iv,
-            encryptedData: data.encryptedData
-          },
-          method: 'POST',
-          success(res) {
-            console.log(res)
-          }
-        })
+    wepy.getUserInfo({
+      success(res) {
+        if (res.userInfo) {
+          self.userInfo = res.userInfo
+          self.$apply()
+          wepy.request({
+            url: service.getUserInfo,
+            data: {
+              res
+            },
+            method: 'POST',
+            success(res) {
+              console.log(res)
+              if (res.data) {
+                self.getMiniMem()
+              }
+            }
+          })
+        }
       }
-      self.$apply()
     })
   }
   onShareAppMessage(res) {

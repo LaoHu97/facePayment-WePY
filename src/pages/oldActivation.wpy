@@ -1,0 +1,166 @@
+<style lang="less">
+.page-body {
+    margin-top: 45rpx;
+}
+.btn-area {
+    padding: 5px 15px;
+}
+.page-section {
+    padding: 32rpx 0;
+    background-color: #fff;
+}
+</style>
+<template>
+<form bindsubmit="formSubmit" bindreset="formReset">
+  <view class="container">
+    <view class="page-section">
+      <view class="weui-cells__title">必填信息</view>
+      <view class="weui-cells weui-cells_after-title">
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">姓名</view>
+          </view>
+          <view class="weui-cell__bd">
+            <view class="weui-cell weui-cell_input">
+              <input class="weui-input" name="name" placeholder="请输入姓名" />
+            </view>
+          </view>
+        </view>
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">手机</view>
+          </view>
+          <view class="weui-cell__bd">
+            <view class="weui-cell weui-cell_input">
+              <input class="weui-input" name="phone" type="number" placeholder="请输入手机号码" />
+            </view>
+          </view>
+        </view>
+        <view class="weui-cell weui-cell_input">
+          <view class="weui-cell__hd">
+            <view class="weui-label">会员卡号</view>
+          </view>
+          <view class="weui-cell__bd">
+            <view class="weui-cell weui-cell_input">
+              <input class="weui-input" name="cardid" placeholder="请输入会员卡号" />
+            </view>
+          </view>
+        </view>
+      </view>
+      <view class="page-body">
+        <view class="btn-area">
+          <button formType="submit" type="primary" loading="{{loading}}">提交</button>
+        </view>
+        <view class="btn-area">
+          <button formType="reset" loading="{{loading}}">重置</button>
+        </view>
+      </view>
+    </view>
+    <foot></foot>
+  </view>
+</form>
+
+</view>
+</template>
+
+<script>
+import wepy from 'wepy'
+import {
+  service
+} from '../config.js'
+// 引入组件
+import Foot from '../components/foot'
+
+export default class OldActivation extends wepy.page {
+  config = {
+    navigationBarTitleText: '查询会员卡'
+  }
+  components = {
+    foot: Foot
+  }
+
+  data = {
+    loading: false
+  }
+
+  computed = {}
+
+  methods = {
+    formSubmit(data) {
+      if (data.detail.value.name && data.detail.value.phone && data.detail.value.cardid) {
+        wepy.showLoading({
+          title: '加载中',
+          mask: true
+        })
+        wepy.request({
+          url: service.activeCard,
+          data: {
+            code: this.$parent.globalData.useridcard.encrypt_code,
+            card_id: this.$parent.globalData.useridcard.card_id
+          },
+          method: 'POST',
+          success(res) {
+            console.log(res)
+            wepy.hideLoading()
+            if (res.data.status === 200) {
+              wepy.showToast({
+                title: '激活成功',
+                icon: 'success',
+                duration: 4000
+              })
+              setTimeout(function() {
+                wepy.navigateTo({
+                  url: 'camera'
+                })
+              }, 4000)
+            } else {
+              wepy.showModal({
+                title: '提示',
+                content: '激活失败',
+                showCancel: false,
+                success: function(res) {
+                  if (res.confirm) {
+                    console.log('用户点击确定')
+                  }
+                }
+              })
+            }
+          },
+          fail(res) {
+            wepy.hideLoading()
+            wepy.showModal({
+              title: '提示',
+              content: '激活失败',
+              showCancel: false,
+              success: function(res) {
+                if (res.confirm) {
+                  console.log('用户点击确定')
+                }
+              }
+            })
+          }
+        })
+      } else {
+        wepy.showModal({
+          title: '提示',
+          content: '资料填写不完整',
+          showCancel: false,
+          success: function(res) {
+            if (res.confirm) {
+              console.log('用户点击确定')
+            }
+          }
+        })
+      }
+    },
+    formReset: function() {
+      console.log('form发生了reset事件')
+    }
+  }
+  events = {}
+  onShow() {}
+  onShareAppMessage(res) {
+    return this.$parent.onShareAppMessage('您有一张会员卡待领取')
+  }
+}
+</script>
