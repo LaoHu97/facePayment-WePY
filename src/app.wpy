@@ -108,6 +108,7 @@ export default class extends wepy.app {
               console.log(res)
               try {
                 wepy.setStorageSync('sessionId', res.data.sessionId)
+                wepy.setStorageSync('openId', res.data.openId)
               } catch (e) {
                 console.log(e)
               }

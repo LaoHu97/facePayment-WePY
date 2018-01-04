@@ -8,11 +8,11 @@ var host = 'http://test.weupay.com';
 
 export const service = {
     //登录获取session
-    jscodeToSession:`${host}/pay/wxSmaPro/jscodeToSession`,
+    jscodeToSession:`${host}/pay/jscodeToSession`,
     //解密encryptedData
     getUserInfo:`${host}/pay/wxSmaPro/getUserInfo`,
     //查询是否领卡
-    getMiniMem:`${host}/pay/wxSmaPro/getMiniMem`,
+    getMiniMem:`${host}/pay/getMiniMem`,
     // 领卡接口
     addCard: `${host}/pay/wxSmaPro/addCard`,
     // 打开会员卡
@@ -21,6 +21,8 @@ export const service = {
     addFacePerson: `${host}/pay/api/face/addFacePerson`,
     // 提交个人资料
     activeCard: `${host}/pay/wxSmaPro/activeCard`,
+    // 查询老会员
+    findOldMem: `${host}/pay/findOldMem`,
     // 主域
     host
 }

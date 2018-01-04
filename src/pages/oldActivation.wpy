@@ -87,13 +87,14 @@ export default class OldActivation extends wepy.page {
 
   methods = {
     formSubmit(data) {
+      let that = this
       if (data.detail.value.name && data.detail.value.phone && data.detail.value.cardid) {
         wepy.showLoading({
           title: '加载中',
           mask: true
         })
         wepy.request({
-          url: service.activeCard,
+          url: service.findOldMem,
           data: {
             code: this.$parent.globalData.useridcard.encrypt_code,
             card_id: this.$parent.globalData.useridcard.card_id
@@ -103,20 +104,32 @@ export default class OldActivation extends wepy.page {
             console.log(res)
             wepy.hideLoading()
             if (res.data.status === 200) {
-              wepy.showToast({
-                title: '激活成功',
-                icon: 'success',
-                duration: 4000
-              })
-              setTimeout(function() {
-                wepy.navigateTo({
-                  url: 'camera'
-                })
-              }, 4000)
+              if (res.data.data.isMem) {
+                if (res.data.data.isActive) {
+                  wepy.navigateTo({
+                    url: 'camera'
+                  })
+                } else {
+                  wepy.openCard({
+                    cardList: [{
+                      cardId: res.data.data.cardId,
+                      code: res.data.data.cardCode
+                    }],
+                    success: function(res) {
+
+                    },
+                    fail: function(res) {
+                      console.log('打开会员卡失败，原因：' + res.errMsg)
+                    }
+                  })
+                }
+              } else {
+                that.addCard()
+              }
             } else {
               wepy.showModal({
                 title: '提示',
-                content: '激活失败',
+                content: '查询失败',
                 showCancel: false,
                 success: function(res) {
                   if (res.confirm) {
@@ -130,7 +143,7 @@ export default class OldActivation extends wepy.page {
             wepy.hideLoading()
             wepy.showModal({
               title: '提示',
-              content: '激活失败',
+              content: '查询失败',
               showCancel: false,
               success: function(res) {
                 if (res.confirm) {
@@ -156,6 +169,43 @@ export default class OldActivation extends wepy.page {
     formReset: function() {
       console.log('form发生了reset事件')
     }
+  }
+  addCard() {
+    let _this = this
+    wepy.showLoading({
+      title: '加载中'
+    })
+    wepy.request({
+      url: service.addCard,
+      data: {
+        mid: '66'
+      },
+      method: 'POST',
+      success(res) {
+        let data = {
+          timestamp: res.data.timestamp,
+          nonce_str: res.data.nonce_str,
+          outer_str: res.data.outer_str,
+          signature: res.data.signature
+        }
+        wepy.addCard({
+          cardList: [{
+            cardId: res.data.card_id,
+            cardExt: JSON.stringify(data)
+          }],
+          success: function(res) {
+            wepy.hideLoading()
+            _this.openCard(res)
+          },
+          fail: function(res) {
+            wepy.hideLoading()
+          }
+        })
+      },
+      fail(res) {
+        console.log(res.data)
+      }
+    })
   }
   events = {}
   onShow() {}

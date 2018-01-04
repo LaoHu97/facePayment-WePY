@@ -183,16 +183,15 @@ export default class Index extends wepy.page {
           self.userInfo = res.userInfo
           self.$apply()
           wepy.request({
-            url: service.getUserInfo,
+            url: service.getMiniMem,
             data: {
-              res
+              mid: '66',
+              openId: wepy.getStorageSync('openId'),
+              appid: 'wx32a0348172f66270'
             },
             method: 'POST',
             success(res) {
-              console.log(res)
-              if (res.data) {
-                self.getMiniMem()
-              }
+
             }
           })
         }
