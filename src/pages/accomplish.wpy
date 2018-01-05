@@ -36,7 +36,7 @@ export default class Accomplish extends wepy.page {
   onLoad(query) {
     console.log(query)
     this.message = query.message
-    if (query.status !== '0') {
+    if (query.status !== '200') {
       this.icon = 'warn'
     } else {
       this.icon = 'success'

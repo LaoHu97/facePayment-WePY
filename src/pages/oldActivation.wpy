@@ -101,11 +101,24 @@ export default class OldActivation extends wepy.page {
           },
           method: 'POST',
           success(res) {
-            console.log(res)
             wepy.hideLoading()
             if (res.data.status === 200) {
               if (res.data.data.isMem) {
                 if (res.data.data.isActive) {
+                  if (res.data.data.isFace) {
+                    wepy.openCard({
+                      cardList: [{
+                        cardId: res.data.data.cardId,
+                        code: res.data.data.cardCode
+                      }],
+                      success: function(res) {
+                        console.log('打开会员卡成功')
+                      },
+                      fail: function(res) {
+                        console.log('打开会员卡失败，原因：' + res.errMsg)
+                      }
+                    })
+                  }
                   wepy.navigateTo({
                     url: 'camera'
                   })

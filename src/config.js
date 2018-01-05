@@ -12,7 +12,7 @@ export const service = {
     //解密encryptedData
     getUserInfo:`${host}/pay/wxSmaPro/getUserInfo`,
     //查询是否领卡
-    getMiniMem:`${host}/pay/getMiniMem`,
+    getMiniMem:`${host}/pay/wxSmaPro/getMiniMem`,
     // 领卡接口
     addCard: `${host}/pay/wxSmaPro/addCard`,
     // 打开会员卡
@@ -22,7 +22,7 @@ export const service = {
     // 提交个人资料
     activeCard: `${host}/pay/wxSmaPro/activeCard`,
     // 查询老会员
-    findOldMem: `${host}/pay/findOldMem`,
+    findOldMem: `${host}/pay/wxSmaPro/findOldMem`,
     // 主域
     host
 }

@@ -76,6 +76,9 @@ export default class Index extends wepy.page {
       })
       wepy.request({
         url: service.addCard,
+        header: {
+          'content-type': 'application/json'
+        },
         data: {
           mid: '66'
         },
@@ -114,17 +117,21 @@ export default class Index extends wepy.page {
     let cardId = res.cardList[0].cardId
     wepy.request({
       url: service.decryptCode,
+      header: {
+        'content-type': 'application/json'
+      },
       data: {
         mid: '66',
+        cardId: cardId,
+        openId: wepy.getStorageSync('openId'),
         encrypt_code: res.cardList[0].code
       },
       method: 'POST',
       success(res) {
-        console.log(res)
         wepy.openCard({
           cardList: [{
             cardId: cardId,
-            code: res.data.cardCode
+            code: res.data.data.cardCode
           }],
           success: function(res) {
             wepy.hideLoading()
@@ -140,40 +147,61 @@ export default class Index extends wepy.page {
   events = {
 
   }
+  onLoad() {
+
+  }
   getMiniMem() {
     wepy.request({
       url: service.getMiniMem,
+      header: {
+        'content-type': 'application/json'
+      },
       data: {
         mid: '66',
-        unionId: '123213213'
+        openId: wepy.getStorageSync('openId'),
+        appid: 'wx32a0348172f66270'
       },
       method: 'POST',
       success(res) {
-
+        wepy.hideLoading()
+        if (res.data.status === 200) {
+          if (res.data.data.isMem) {
+            if (res.data.data.isActive) {
+              if (res.data.data.isFace) {
+                wepy.openCard({
+                  cardList: [{
+                    cardId: res.data.data.cardId,
+                    code: res.data.data.cardCode
+                  }],
+                  success: function(res) {
+                    console.log('打开会员卡成功')
+                  },
+                  fail: function(res) {
+                    console.log('打开会员卡失败，原因：' + res.errMsg)
+                  }
+                })
+              }
+              wepy.navigateTo({
+                url: 'camera'
+              })
+            } else {
+              wepy.openCard({
+                cardList: [{
+                  cardId: res.data.data.cardId,
+                  code: res.data.data.cardCode
+                }],
+                success: function(res) {
+                  console.log('打开会员卡成功')
+                },
+                fail: function(res) {
+                  console.log('打开会员卡失败，原因：' + res.errMsg)
+                }
+              })
+            }
+          }
+        }
       }
     })
-  }
-  onLoad() {
-    // let self = this
-    // this.$parent.getUserInfo(function(data) {
-    //   if (data.userInfo) {
-    //     self.userInfo = data.userInfo
-    //     self.$apply()
-    //     wepy.request({
-    //       url: service.getUserInfo,
-    //       data: {
-    //         data
-    //       },
-    //       method: 'POST',
-    //       success(res) {
-    //         console.log(res)
-    //         if (res.data) {
-    //           self.getMiniMem()
-    //         }
-    //       }
-    //     })
-    //   }
-    // })
   }
   onShow() {
     let self = this
@@ -182,18 +210,12 @@ export default class Index extends wepy.page {
         if (res.userInfo) {
           self.userInfo = res.userInfo
           self.$apply()
-          wepy.request({
-            url: service.getMiniMem,
-            data: {
-              mid: '66',
-              openId: wepy.getStorageSync('openId'),
-              appid: 'wx32a0348172f66270'
-            },
-            method: 'POST',
-            success(res) {
-
-            }
+          wepy.showLoading({
+            title: '请稍后',
           })
+          setTimeout(function() {
+            self.getMiniMem()
+          }, 1000)
         }
       }
     })
