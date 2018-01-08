@@ -58,7 +58,8 @@ export default class Index extends wepy.page {
     userInfo: {
       avatarUrl: '',
       nickName: '加载中...'
-    }
+    },
+    fansId: ''
   }
 
   computed = {}
@@ -80,6 +81,7 @@ export default class Index extends wepy.page {
           'content-type': 'application/json'
         },
         data: {
+          fansId: String(_this.fansId),
           mid: wepy.getStorageSync('mid')
         },
         method: 'POST',
@@ -203,21 +205,37 @@ export default class Index extends wepy.page {
       }
     })
   }
+  getUserInfo(data) {
+    let _this = this
+    wepy.request({
+      url: service.getUserInfo,
+      header: {
+        'content-type': 'application/json'
+      },
+      data: {
+        encryptedData: data.encryptedData,
+        iv: data.iv,
+        signature: data.signature,
+        rawData: data.rawData,
+        userInfo: JSON.stringify(data.userInfo)
+      },
+      method: 'POST',
+      success(res) {
+        _this.fansId = res.data.data.fansId
+        _this.$apply()
+      }
+    })
+  }
   onShow() {
     let self = this
-    wepy.getUserInfo({
-      success(res) {
-        if (res.userInfo) {
-          self.userInfo = res.userInfo
-          self.$apply()
-          wepy.showLoading({
-            title: '请稍后'
-          })
-          setTimeout(function() {
-            self.getMiniMem()
-          }, 1000)
-        }
-      }
+    this.$parent.getUserInfo(function(data) {
+      self.userInfo = data.userInfo
+      self.$apply()
+      wepy.showLoading({
+        title: '请稍后'
+      })
+      self.getMiniMem()
+      self.getUserInfo(data)
     })
   }
   onShareAppMessage(res) {

@@ -9,11 +9,7 @@
       "appid":"wx32a0348172f66270"
     },
     "attr": {
-      "host": "open.weixin.qq.com",
-      "users": [
-        "user_1",
-        "user_2"
-      ]
+      "host": "http://test.weupay.com"
     }
   }
 }

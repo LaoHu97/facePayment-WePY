@@ -1,10 +1,9 @@
 /* ========================================================
                         小程序配置文件
 ======================================================== */
-
 // 域名
-var host = 'http://test.weupay.com';
-// var host = 'http://library.glore/api';
+let extConfig = wx.getExtConfigSync? wx.getExtConfigSync(): {}
+let host = extConfig.attr.host;
 
 export const service = {
     //登录获取session
