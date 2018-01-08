@@ -1,9 +1,0 @@
-
-<view class="accomplish_view">
-  <view class="group">
-    <block>
-      <icon type="success" size="120"/>
-    </block>
-    <view class="text">认证成功</view>
-  </view>
-</view>
