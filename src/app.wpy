@@ -46,42 +46,42 @@ export default class extends wepy.app {
   constructor() {
     super()
     this.use('requestfix')
-    this.intercept('uploadFile', {
-      config(p) {
-        // let sessionId = wepy.getStorageSync('sessionId')
-        // p.formData.sessionId = sessionId
-        // if (sessionId) {
-        //   p.header.sessionId = sessionId
-        // }
-        console.log(p)
-        return p
-      },
-      success(p) {
-        if (p.data.status === 400) {
-          console.log('session已过期')
-          wepy.clearStorageSync()
-          wepy.showModal({
-            title: '登录过期',
-            content: '请重新登录',
-            success: function(res) {
-              if (res.confirm) {
-                wepy.reLaunch({
-                  url: 'index',
-                  success() {
-                    this.login()
-                  }
-                })
-              } else if (res.cancel) {}
-            }
-          })
-        }
-        return p
-      },
-      fail(p) {
-        console.log('API调用失败')
-        return p
-      }
-    })
+    // this.intercept('uploadFile', {
+    //   config(p) {
+    //     // let sessionId = wepy.getStorageSync('sessionId')
+    //     // p.formData.sessionId = sessionId
+    //     // if (sessionId) {
+    //     //   p.header.sessionId = sessionId
+    //     // }
+    //     console.log(p)
+    //     return p
+    //   },
+    //   success(p) {
+    //     if (p.data.status === 400) {
+    //       console.log('session已过期')
+    //       wepy.clearStorageSync()
+    //       wepy.showModal({
+    //         title: '登录过期',
+    //         content: '请重新登录',
+    //         success: function(res) {
+    //           if (res.confirm) {
+    //             wepy.reLaunch({
+    //               url: 'index',
+    //               success() {
+    //                 this.login()
+    //               }
+    //             })
+    //           } else if (res.cancel) {}
+    //         }
+    //       })
+    //     }
+    //     return p
+    //   },
+    //   fail(p) {
+    //     console.log('API调用失败')
+    //     return p
+    //   }
+    // })
     this.intercept('request', {
       config(p) {
         let sessionId = wepy.getStorageSync('sessionId')
@@ -95,7 +95,7 @@ export default class extends wepy.app {
       success(p) {
         if (p.data.status === 400) {
           console.log('session已过期')
-          wepy.clearStorageSync()
+          wepy.removeStorageSync('sessionId')
           wepy.showModal({
             title: '登录过期',
             content: '请重新登录',
@@ -136,6 +136,10 @@ export default class extends wepy.app {
   }
   onShow(data) {
     this.globalData.useridcard = data.query
+    let extConfig = wepy.getExtConfigSync ? wepy.getExtConfigSync() : {}
+    console.log(extConfig)
+    wepy.setStorageSync('mid', extConfig.businessInfo.mid)
+    wepy.setStorageSync('appid', extConfig.businessInfo.appid)
   }
   sleep(s) {
     return new Promise((resolve, reject) => {
@@ -157,7 +161,7 @@ export default class extends wepy.app {
           wepy.request({
             url: service.jscodeToSession,
             data: {
-              appid: 'wx32a0348172f66270',
+              appid: wepy.getStorageSync('appid'),
               code: res.code
             },
             method: 'POST',

@@ -95,7 +95,13 @@ export default class OldActivation extends wepy.page {
         })
         wepy.request({
           url: service.findOldMem,
+          header: {
+            'content-type': 'application/json'
+          },
           data: {
+            name: data.detail.value.name,
+            phone: data.detail.value.phone,
+            cardid: data.detail.value.cardid,
             code: this.$parent.globalData.useridcard.encrypt_code,
             card_id: this.$parent.globalData.useridcard.card_id
           },
@@ -129,7 +135,7 @@ export default class OldActivation extends wepy.page {
                       code: res.data.data.cardCode
                     }],
                     success: function(res) {
-
+                      console.log('打开会员卡成功')
                     },
                     fail: function(res) {
                       console.log('打开会员卡失败，原因：' + res.errMsg)
@@ -184,14 +190,16 @@ export default class OldActivation extends wepy.page {
     }
   }
   addCard() {
-    let _this = this
     wepy.showLoading({
       title: '加载中'
     })
     wepy.request({
       url: service.addCard,
+      header: {
+        'content-type': 'application/json'
+      },
       data: {
-        mid: '66'
+        mid: wepy.getStorageSync('mid')
       },
       method: 'POST',
       success(res) {
@@ -208,7 +216,6 @@ export default class OldActivation extends wepy.page {
           }],
           success: function(res) {
             wepy.hideLoading()
-            _this.openCard(res)
           },
           fail: function(res) {
             wepy.hideLoading()

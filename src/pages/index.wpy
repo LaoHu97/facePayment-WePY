@@ -80,7 +80,7 @@ export default class Index extends wepy.page {
           'content-type': 'application/json'
         },
         data: {
-          mid: '66'
+          mid: wepy.getStorageSync('mid')
         },
         method: 'POST',
         success(res) {
@@ -121,7 +121,7 @@ export default class Index extends wepy.page {
         'content-type': 'application/json'
       },
       data: {
-        mid: '66',
+        mid: wepy.getStorageSync('mid'),
         cardId: cardId,
         openId: wepy.getStorageSync('openId'),
         encrypt_code: res.cardList[0].code
@@ -157,9 +157,9 @@ export default class Index extends wepy.page {
         'content-type': 'application/json'
       },
       data: {
-        mid: '66',
+        mid: wepy.getStorageSync('mid'),
         openId: wepy.getStorageSync('openId'),
-        appid: 'wx32a0348172f66270'
+        appid: wepy.getStorageSync('appid')
       },
       method: 'POST',
       success(res) {
@@ -211,7 +211,7 @@ export default class Index extends wepy.page {
           self.userInfo = res.userInfo
           self.$apply()
           wepy.showLoading({
-            title: '请稍后',
+            title: '请稍后'
           })
           setTimeout(function() {
             self.getMiniMem()

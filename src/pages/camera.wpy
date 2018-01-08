@@ -63,8 +63,12 @@ export default class Camera extends wepy.page {
         filePath: this.src,
         name: 'imageUrl',
         formData: {
-          'mid': '66',
-          'formData': this.formData
+          'mid': wepy.getStorageSync('mid'),
+          'name': this.formData.name,
+          'phone': this.formData.phone,
+          'idcard': this.formData.idcard,
+          'date': this.formData.date,
+          'mailbox': this.formData.mailbox
         },
         success: function(res) {
           let {
