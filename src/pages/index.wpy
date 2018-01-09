@@ -221,7 +221,9 @@ export default class Index extends wepy.page {
       },
       method: 'POST',
       success(res) {
-        _this.fansId = res.data.data.fansId
+        if (res.data.status === 200) {
+          _this.fansId = res.data.data.fansId
+        }
         _this.$apply()
       }
     })

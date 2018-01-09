@@ -75,7 +75,6 @@ export default class Camera extends wepy.page {
             status,
             message
           } = JSON.parse(res.data)
-          console.log(res)
           wepy.navigateTo({
             url: 'accomplish?status=' + status + '&message=' + message,
             success() {
