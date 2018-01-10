@@ -50,9 +50,10 @@ export default class extends wepy.app {
       config(p) {
         let sessionId = wepy.getStorageSync('sessionId')
         if (sessionId) {
-          p.data.sessionId = sessionId
+          p.formData.sessionId = sessionId
           p.header.sessionId = sessionId
         }
+        console.log(p)
         return p
       },
       success(p) {
@@ -74,6 +75,7 @@ export default class extends wepy.app {
             }
           })
         }
+        console.log(p)
         return p
       },
       fail(p) {
@@ -88,6 +90,7 @@ export default class extends wepy.app {
           p.data.sessionId = sessionId
           p.header.sessionId = sessionId
         }
+        console.log(p)
         return p
       },
       success(p) {
@@ -109,6 +112,7 @@ export default class extends wepy.app {
             }
           })
         }
+        console.log(p)
         return p
       },
       fail(p) {

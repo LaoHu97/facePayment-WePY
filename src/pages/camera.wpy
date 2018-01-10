@@ -60,15 +60,15 @@ export default class Camera extends wepy.page {
       })
       wepy.uploadFile({
         url: service.addFacePerson,
+        header: {
+          'content-type': 'application/json'
+        },
         filePath: this.src,
         name: 'imageUrl',
         formData: {
           'mid': wepy.getStorageSync('mid'),
-          'name': this.formData.name,
-          'phone': this.formData.phone,
-          'idcard': this.formData.idcard,
-          'date': this.formData.date,
-          'mailbox': this.formData.mailbox
+          'cardId': this.formData.cardId,
+          'cardCode': this.formData.cardCode
         },
         success: function(res) {
           let {

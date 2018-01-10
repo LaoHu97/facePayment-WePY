@@ -9,19 +9,19 @@ export const service = {
     //登录获取session
     jscodeToSession:`${host}/pay/jscodeToSession`,
     //解密encryptedData
-    getUserInfo:`${host}/pay/wxSmaPro/getUserInfo`,
+    getUserInfo:`${host}/pay/mini/getUserInfo`,
     //查询是否领卡
-    getMiniMem:`${host}/pay/wxSmaPro/getMiniMem`,
+    getMiniMem:`${host}/pay/mini/getMiniMem`,
     // 领卡接口
-    addCard: `${host}/pay/wxSmaPro/addCard`,
+    addCard: `${host}/pay/mini/addCard`,
     // 打开会员卡
-    decryptCode: `${host}/pay/wxSmaPro/decryptCode`,
+    decryptCode: `${host}/pay/mini/decryptCode`,
     // 上传图片
     addFacePerson: `${host}/pay/api/face/addFacePerson`,
     // 提交个人资料
-    activeCard: `${host}/pay/wxSmaPro/activeCard`,
+    activeCard: `${host}/pay/mini/activeCard`,
     // 查询老会员
-    findOldMem: `${host}/pay/wxSmaPro/findOldMem`,
+    findOldMem: `${host}/pay/mini/findOldMem`,
     // 主域
     host
 }

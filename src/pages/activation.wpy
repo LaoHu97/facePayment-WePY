@@ -117,7 +117,6 @@ export default class Activation extends wepy.page {
       this.$apply()
     },
     formSubmit(data) {
-      let _this = this
       if (data.detail.value.name && data.detail.value.phone && data.detail.value.idcard) {
         wepy.showLoading({
           title: '加载中'
@@ -138,7 +137,6 @@ export default class Activation extends wepy.page {
           },
           method: 'POST',
           success(res) {
-            console.log(res)
             wepy.hideLoading()
             if (res.data.status === 200) {
               wepy.showToast({
@@ -148,7 +146,7 @@ export default class Activation extends wepy.page {
               })
               setTimeout(function() {
                 wepy.navigateTo({
-                  url: 'camera?name=' + data.detail.value.name + '&phone=' + data.detail.value.phone + '&idcard=' + data.detail.value.idcard + '&date=' + _this.date + '&mailbox=' + data.detail.value.mailbox
+                  url: 'camera?cardCode=' + res.data.data.cardCode + '&cardId=' + res.data.data.cardId
                 })
               }, 4000)
             } else {

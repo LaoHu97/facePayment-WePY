@@ -184,7 +184,7 @@ export default class Index extends wepy.page {
                 })
               }
               wepy.navigateTo({
-                url: 'camera'
+                url: 'camera?cardCode=' + res.data.data.cardCode + '&cardId=' + res.data.data.cardId
               })
             } else {
               wepy.openCard({
