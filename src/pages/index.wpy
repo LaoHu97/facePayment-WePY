@@ -153,6 +153,9 @@ export default class Index extends wepy.page {
 
   }
   getMiniMem() {
+    wepy.showLoading({
+      title: '请稍后'
+    })
     wepy.request({
       url: service.getMiniMem,
       header: {
@@ -182,10 +185,11 @@ export default class Index extends wepy.page {
                     console.log('打开会员卡失败，原因：' + res.errMsg)
                   }
                 })
+              } else {
+                wepy.navigateTo({
+                  url: 'camera?cardCode=' + res.data.data.cardCode + '&cardId=' + res.data.data.cardId
+                })
               }
-              wepy.navigateTo({
-                url: 'camera?cardCode=' + res.data.data.cardCode + '&cardId=' + res.data.data.cardId
-              })
             } else {
               wepy.openCard({
                 cardList: [{
@@ -221,8 +225,10 @@ export default class Index extends wepy.page {
       },
       method: 'POST',
       success(res) {
+        wepy.hideLoading()
         if (res.data.status === 200) {
           _this.fansId = res.data.data.fansId
+          _this.getMiniMem()
         }
         _this.$apply()
       }
@@ -236,8 +242,9 @@ export default class Index extends wepy.page {
       wepy.showLoading({
         title: '请稍后'
       })
-      self.getMiniMem()
-      self.getUserInfo(data)
+      setTimeout(function() {
+        self.getUserInfo(data)
+      }, 1000)
     })
   }
   onShareAppMessage(res) {

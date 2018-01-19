@@ -92,8 +92,31 @@ export default class Camera extends wepy.page {
   events = {}
   onShow() {}
   onLoad(query) {
-    this.formData = query
-    this.$apply()
+    console.log('我是激活页面数据' + query.cardCode)
+    let _this = this
+    if (query.cardCode) {
+      _this.formData = query
+      _this.$apply()
+    } else {
+      wepy.request({
+        url: service.decryptCode,
+        header: {
+          'content-type': 'application/json'
+        },
+        data: {
+          mid: wepy.getStorageSync('mid'),
+          openId: _this.$parent.globalData.useridcard.openid,
+          code: _this.$parent.globalData.useridcard.encrypt_code,
+          card_id: _this.$parent.globalData.useridcard.card_id
+        },
+        method: 'POST',
+        success(res) {
+          console.log(res)
+          _this.formData = res.data.data
+          _this.$apply()
+        }
+      })
+    }
   }
   onShareAppMessage(res) {
     return this.$parent.onShareAppMessage('您有一张会员卡待领取')

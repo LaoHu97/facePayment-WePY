@@ -195,8 +195,8 @@ export default class extends wepy.app {
         console.log('登录未过期')
       },
       fail: function() {
-        console.log('登录过期')
         this.login()
+        console.log('登录过期')
       }
     })
   }
